@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                                     .build();
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdate);
-                            Intent intent = new Intent(view.getContext(), ChatLobby.class);
+                            Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
                         }
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                                     .build();
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdate);
-                            Intent intent = new Intent(view.getContext(), ChatLobby.class);
+                            Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
                         }
 

@@ -41,8 +41,7 @@ public class ChatLobby extends AppCompatActivity {
                 String userId = mAuth.getCurrentUser().getUid();
                 FirebaseUser user = mAuth.getCurrentUser();
                 String name = user.getDisplayName();
-
-                //todo : fix passing messages through firebase database
+                
 
                 msgET.setText("");
 
