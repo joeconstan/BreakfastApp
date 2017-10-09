@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "110767570745",
+    "firebase_url": "https://breakfastapp-10a84.firebaseio.com",
+    "project_id": "breakfastapp-10a84",
+    "storage_bucket": "breakfastapp-10a84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110767570745:android:e41fda9a57185dbb",
+        "android_client_info": {
+          "package_name": "com.arealbreakfast.breakfastapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110767570745-7r21cfm3fdcqvvd98uvr3foo16s2tndp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arealbreakfast.breakfastapp",
+            "certificate_hash": "09e12d6f9043047b38291e3facd6b66ebbb0c272"
+          }
+        },
+        {
+          "client_id": "110767570745-kh57ot0vheao854oef0r0sqkd6egrr52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtL3YEs9VSXzzHYsPBbKLb4VuMM4GoUUs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110767570745-kh57ot0vheao854oef0r0sqkd6egrr52.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
