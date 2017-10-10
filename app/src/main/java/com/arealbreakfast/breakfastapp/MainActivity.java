@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             EditText ps = (EditText) findViewById(R.id.passwordET);
             //todo: query with uid for login details and set the edittexts to these so that Login(view) will read them and proceed
             //un.setText();
-            Login(new View(this));
+            //Login(new View(this));
         }
 
         mAuth = FirebaseAuth.getInstance();
