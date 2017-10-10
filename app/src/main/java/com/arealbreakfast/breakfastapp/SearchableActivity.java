@@ -9,8 +9,12 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class SearchableActivity extends ListActivity {
 
@@ -32,7 +36,20 @@ public class SearchableActivity extends ListActivity {
 
 
     public void SearchForUsers(String query) {
-        Log.v(TAG, userRef.orderByChild("name").equalTo(query).toString());
+        Query q = userRef.orderByChild("name").equalTo(query);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    Log.v(TAG, dataSnapshot.getChildren().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         ListView lv = (ListView) findViewById(android.R.id.list);
 
     }

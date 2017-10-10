@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final static String TAG = "here: ";
-    private SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
     //todo : use shared preferences to remember login info
     //todo : only ask for username if registering
@@ -38,9 +37,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String id = sharedPref.getString("uid", "");
+        if (!id.equals("")) {
+            EditText un = (EditText) findViewById(R.id.usernameET);
+            EditText em = (EditText) findViewById(R.id.emailET);
+            EditText ps = (EditText) findViewById(R.id.passwordET);
+            //todo: query with uid for login details and set the edittexts to these so that Login(view) will read them and proceed
+            //un.setText();
+            Login(new View(this));
+        }
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText em = (EditText) findViewById(R.id.emailET);
         EditText ps = (EditText) findViewById(R.id.passwordET);
         final EditText un = (EditText) findViewById(R.id.usernameET);
-
+        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String email = em.getText().toString();
         String password = ps.getText().toString();
 
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         EditText ps = (EditText) findViewById(R.id.passwordET);
         String email = em.getText().toString();
         String password = ps.getText().toString();
-
+        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -137,11 +143,12 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdate);
 
+                            String uid =  user.getUid();
                             //commit to sharedpref
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("uid", uid);
                             editor.apply();
-                            
+
                             Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
                         }
