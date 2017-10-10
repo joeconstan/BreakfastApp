@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.apply();
 
 
-                            Intent intent = new Intent(view.getContext(), FindContacts.class);
+                            Intent intent = new Intent(view.getContext(), MainFragmentPager.class);
                             startActivity(intent);
 
                         }
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString("uid", uid);
                             editor.apply();
 
-                            Intent intent = new Intent(view.getContext(), FindContacts.class);
+                            Intent intent = new Intent(view.getContext(), MainFragmentPager.class);
                             startActivity(intent);
                         }
 
