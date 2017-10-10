@@ -36,6 +36,9 @@
         <activity android:name=".MainFragmentPager">
 
         </activity>
+        <activity android:name=".FriendRequest">
+
+        </activity>
     </application>
 
 </manifest>
