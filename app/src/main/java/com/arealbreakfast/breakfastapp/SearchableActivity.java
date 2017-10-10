@@ -54,7 +54,7 @@ public class SearchableActivity extends ListActivity {
 
         String myUid = mAuth.getCurrentUser().getUid();
         String requestedUid = globalUID;
-        Friend friend = new Friend(myUid, globalUID, 0);
+        Friend friend = new Friend(myUid, requestedUid, "0");
         friendRef.push().setValue(friend);
         Toast.makeText(this, "Friend Request Sent", Toast.LENGTH_SHORT).show();
     }

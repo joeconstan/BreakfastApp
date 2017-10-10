@@ -5,14 +5,14 @@ public class Friend {
 
     private String uid1;
     private String uid2;
-    private int status;
+    private String status;
 
     public Friend() {
 
     }
 
 
-    public Friend(String uid1, String uid2, int status) {
+    public Friend(String uid1, String uid2, String status) {
         this.uid1 = uid1;
         this.uid2 = uid2;
         this.status = status;
@@ -27,19 +27,8 @@ public class Friend {
         return uid2;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setUid1(String uid1) {
-        this.uid1 = uid1;
-    }
-
-    public void setUid2(String uid2) {
-        this.uid2 = uid2;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

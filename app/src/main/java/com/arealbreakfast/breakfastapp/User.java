@@ -8,7 +8,7 @@ public class User {
     private String uid;
 
 
-    public User(){
+    public User() {
 
     }
 
