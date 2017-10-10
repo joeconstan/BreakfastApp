@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
 
+
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final static String TAG = "here: ";
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Register(final View view) {
-        EditText em = (EditText) findViewById(R.id.emailET);
+        final EditText em = (EditText) findViewById(R.id.emailET);
         EditText ps = (EditText) findViewById(R.id.passwordET);
         final EditText un = (EditText) findViewById(R.id.usernameET);
 
@@ -72,13 +73,22 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else{
                             String nameUser = un.getText().toString();
+                            String email = em.getText().toString();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(nameUser)
                                     .build();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String uid =  user.getUid();
                             user.updateProfile(profileUpdate);
+
+
+                            //add user to database
+                            User us = new User(nameUser, email, uid);
+                            userRef.push().setValue(us);
+
                             Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
+
                         }
 
                     }
