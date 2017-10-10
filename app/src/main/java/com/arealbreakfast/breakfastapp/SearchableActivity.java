@@ -34,6 +34,6 @@ public class SearchableActivity extends ListActivity {
     public void SearchForUsers(String query) {
         Log.v(TAG, userRef.orderByChild("name").equalTo(query).toString());
         ListView lv = (ListView) findViewById(android.R.id.list);
-        
+
     }
 }

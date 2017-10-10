@@ -1,6 +1,8 @@
 package com.arealbreakfast.breakfastapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final static String TAG = "here: ";
+    private SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
     //todo : use shared preferences to remember login info
     //todo : only ask for username if registering
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -86,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
                             User us = new User(nameUser, email, uid);
                             userRef.push().setValue(us);
 
+
+                            //commit to sharedpref
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("uid", uid);
+                            editor.apply();
+
+
                             Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
 
@@ -123,6 +136,12 @@ public class MainActivity extends AppCompatActivity {
                                     .build();
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdate);
+
+                            //commit to sharedpref
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("uid", uid);
+                            editor.apply();
+                            
                             Intent intent = new Intent(view.getContext(), FindContacts.class);
                             startActivity(intent);
                         }
