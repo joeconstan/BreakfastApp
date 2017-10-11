@@ -13,7 +13,7 @@ import com.google.firebase.database.Query;
 
 class FireBaseInformationFunctions extends AppCompatActivity{
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth; // todo: assign mauth - itll throw a nullptrexcptn right now
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference friendRef = rootRef.child("friends");
