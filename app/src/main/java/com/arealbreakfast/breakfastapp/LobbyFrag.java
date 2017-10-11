@@ -22,11 +22,12 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lobby, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabl);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), AddFriends.class);
+                //todo: pull up friends list and make clickable. if you click on one, opens up new message screen
+                Intent intent = new Intent(view.getContext(), ComposeRecipient.class);
                 startActivity(intent);
             }
         });

@@ -17,8 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,11 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
 
-
     private FirebaseAuth.AuthStateListener mAuthListener;
     private final static String TAG = "here: ";
 
-    //todo : use shared preferences to remember login info
     //todo : only ask for username if registering
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +42,35 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String id = sharedPref.getString("uid", "");
         if (!id.equals("")) {
-            EditText un = (EditText) findViewById(R.id.usernameET);
-            EditText em = (EditText) findViewById(R.id.emailET);
-            EditText ps = (EditText) findViewById(R.id.passwordET);
-            //todo: query with uid for login details and set the edittexts to these so that Login(view) will read them and proceed
-            //un.setText();
-            //Login(new View(this));
+            final EditText un = (EditText) findViewById(R.id.usernameET);
+            final EditText em = (EditText) findViewById(R.id.emailET);
+            final EditText ps = (EditText) findViewById(R.id.passwordET);
+            //query with uid for login details and set the edittexts to these so that Login(view) will read them and proceed -
+            // theres a better solution though, I'm sure. something like php session with uid?
+            Query q = userRef.orderByChild("uid").equalTo(id);
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    if (dataSnapshot.exists()) {
+                        User user = dataSnapshot.getValue(User.class);
+                        un.setText(user.getName());
+                        em.setText(user.getEmail());
+                        //todo: set focus to ps
+                        //Login(new View(MainActivity.this));
+
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
+
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -60,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }
@@ -82,15 +106,14 @@ public class MainActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "register failed",
                                     Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else {
                             String nameUser = un.getText().toString();
                             String email = em.getText().toString();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(nameUser)
                                     .build();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String uid =  user.getUid();
+                            String uid = user.getUid();
                             user.updateProfile(profileUpdate);
 
 
@@ -107,14 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(view.getContext(), MainFragmentPager.class);
                             startActivity(intent);
-
                         }
-
                     }
                 });
-
     }
-
 
 
     public void Login(final View view) {
@@ -129,13 +148,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                    //todo: show a toast if device offline - rn it does nothing
+                        //todo: show a toast if device offline - rn it does nothing
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(MainActivity.this, "login failed",
                                     Toast.LENGTH_SHORT).show();
-                        }
-                        else{
+                        } else {
                             String nameUser = un.getText().toString();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(nameUser)
@@ -143,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             user.updateProfile(profileUpdate);
 
-                            String uid =  user.getUid();
+                            String uid = user.getUid();
                             //commit to sharedpref
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString("uid", uid);
@@ -173,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mAuth.addAuthStateListener(mAuthListener);
     }

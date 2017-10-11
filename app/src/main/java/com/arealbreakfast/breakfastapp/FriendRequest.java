@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-public class FriendRequest extends AppCompatActivity {
+public class FriendRequest extends FireBaseInformationFunctions {
 
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
@@ -69,42 +69,7 @@ public class FriendRequest extends AppCompatActivity {
     }
 
 
-    private String getNameByUid(String uid1) {
-        final String[] name = new String[1]; //is making this an array to avoid 'final' problems really the best solution? it was the alt+enter solution
-        name[0] = ""; //in case the snapshot doesnt exist
-        Query q = userRef.orderByChild("uid").equalTo(uid1);
 
-        q.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()) {
-                    User u = dataSnapshot.getValue(User.class);
-                    name[0] = u.getName();
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return name[0];
-    }
 
 
 }

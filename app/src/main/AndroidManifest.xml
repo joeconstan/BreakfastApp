@@ -39,6 +39,9 @@
         <activity android:name=".FriendRequest">
 
         </activity>
+        <activity android:name=".ComposeRecipient">
+
+        </activity>
     </application>
 
 </manifest>
