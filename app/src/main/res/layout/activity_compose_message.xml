@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/backgroundrevised"
+    >
+
+    <include layout="@layout/custom_toolbar"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="420sp"
+        android:id="@+id/mainmsgarea_tv"
+        />
+
+    <EditText
+        android:layout_width="280sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/newmsg_et"
+        android:layout_below="@+id/mainmsgarea_tv"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:id="@+id/newmsgSendButton"
+        android:layout_below="@+id/mainmsgarea_tv"
+        android:layout_toEndOf="@+id/newmsg_et"
+        android:layout_marginLeft="5sp" />
+
+
+
+
+
+</RelativeLayout>

@@ -42,6 +42,9 @@
         <activity android:name=".ComposeRecipient">
 
         </activity>
+        <activity android:name=".ComposeMessage">
+
+        </activity>
     </application>
 
 </manifest>

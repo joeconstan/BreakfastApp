@@ -1,8 +1,12 @@
 package com.arealbreakfast.breakfastapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,7 +21,7 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 
-public class ComposeRecipient extends FireBaseInformationFunctions {
+public class ComposeRecipient extends AppCompatActivity {
 
     static String name; //better soln?
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -54,6 +58,7 @@ public class ComposeRecipient extends FireBaseInformationFunctions {
 
                                     name = u.getName();
                                     friends.add(name);
+                                    displayFriends(friends);
                                 }
                             }
 
@@ -73,7 +78,6 @@ public class ComposeRecipient extends FireBaseInformationFunctions {
                             public void onCancelled(DatabaseError databaseError) {
                             }
                         });
-                        displayFriends(friends);
                     } else if ((mAuth.getCurrentUser() != null) && (friend.getUid2().equals(mAuth.getCurrentUser().getUid()))) {
                         Query q = userRef.orderByChild("uid").equalTo(friend.getUid1()); //todo: https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
                         q.addChildEventListener(new ChildEventListener() {
@@ -83,6 +87,7 @@ public class ComposeRecipient extends FireBaseInformationFunctions {
                                     User u = dataSnapshot.getValue(User.class);
                                     name = u.getName();
                                     friends.add(name);
+                                    displayFriends(friends);
                                 }
                             }
 
@@ -102,6 +107,7 @@ public class ComposeRecipient extends FireBaseInformationFunctions {
                             public void onCancelled(DatabaseError databaseError) {
                             }
                         });
+
 
                     }
                 }
@@ -130,7 +136,20 @@ public class ComposeRecipient extends FireBaseInformationFunctions {
 
     public void displayFriends(ArrayList<String> f) {
         ListView lv = (ListView) findViewById(R.id.compose_recipient_lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, friends);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, f);
+        Log.v(TAG, "friends.get(0):-------  " + f.get(0));
         lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedName = adapter.getItem(position);
+                Intent intent = new Intent(view.getContext(), ComposeMessage.class);
+                intent.putExtra("recp", selectedName);
+                startActivity(intent);
+            }
+        });
+
     }
 }
