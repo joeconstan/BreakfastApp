@@ -18,7 +18,7 @@ import com.google.firebase.database.Query;
 public class FriendRequest extends FireBaseInformationFunctions {
 
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference userRef = rootRef.child("users");
+    //private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference friendRef = rootRef.child("friends");
     private final static String TAG = "nameofPerson: ";
 

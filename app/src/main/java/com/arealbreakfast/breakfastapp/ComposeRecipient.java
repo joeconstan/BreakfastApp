@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
-public class ComposeRecipient extends AppCompatActivity {
+public class ComposeRecipient extends FireBaseInformationFunctions {
 
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -29,30 +29,11 @@ public class ComposeRecipient extends AppCompatActivity {
         //todo: get list of friends from database (then store that info locally?) and put into a clickable listview
         //ListView lv = (ListView) findViewById(R.id.);
         //getFriends();
-        final String friends[] = new String[1]; //todo: add this "getfriends" function that ive made to a separate interface and implement it. do the same w getnamebyuid, and toolbar functions
-        friends[0] = "hi";
+         //todo: add this "getfriends" function that ive made to a separate interface and implement it. do the same w getnamebyuid, and toolbar functions
 
-        Query q = friendRef.orderByChild("status").equalTo("1"); //limit with two where clauses or filter out the objects that are returned?
-        q.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()){
-                    Friend friend = dataSnapshot.getValue(Friend.class);
-                    if ((mAuth.getCurrentUser()!=null) && (friend.getUid1().equals(mAuth.getCurrentUser().getUid()))){
-                        //friends[0] = getnamebyuid(friend.getUid1() or 2?!);
-                    }
-                }
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        String[] friends = getFriends();
+
 
     }
 }

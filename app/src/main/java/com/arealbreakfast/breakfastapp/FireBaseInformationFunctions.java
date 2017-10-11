@@ -16,8 +16,10 @@ class FireBaseInformationFunctions extends AppCompatActivity{
     private FirebaseAuth mAuth;
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
+    private DatabaseReference friendRef = rootRef.child("friends");
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     private final static String TAG = "here: ";
 
     public String getNameByUid(String uid1) {
@@ -58,7 +60,28 @@ class FireBaseInformationFunctions extends AppCompatActivity{
     }
 
 
-    public String getFriends(){
+    public String[] getFriends(){ //change to arraylist?
+        Query q = friendRef.orderByChild("status").equalTo("1"); //limit with two where clauses or filter out the objects that are returned?
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists()){
+                    Friend friend = dataSnapshot.getValue(Friend.class);
+                    if ((mAuth.getCurrentUser()!=null) && (friend.getUid1().equals(mAuth.getCurrentUser().getUid()))){
+                        //friends[0] = getnamebyuid(friend.getUid1() or 2?!);
+                    }
+                }
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+        return new String[] {""};
     }
 }
