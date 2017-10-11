@@ -1,2 +1,2 @@
-# BreakfastApp\
+# BreakfastApp
 A basic chat app
