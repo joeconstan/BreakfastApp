@@ -31,7 +31,7 @@
              android:layout_alignParentEnd="true"
              android:layout_marginRight="20sp"
              android:background="@null"
-             android:paddingRight="10sp"
+             android:paddingRight="5sp"
              android:src="@drawable/ic_friend_request"
 
              />

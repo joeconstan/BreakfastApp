@@ -44,9 +44,39 @@ public class FriendRequest extends FireBaseInformationFunctions {
                 if (dataSnapshot.exists()) {
                     Friend person = dataSnapshot.getValue(Friend.class);
                     String uid1 = person.getUid1();
-                    String nameofPerson = getNameByUid(uid1);
-                    Log.v(TAG, nameofPerson);
-                    friendRequests[0] = nameofPerson;
+                    final String nameofPerson[] = new String[1];
+
+                    Query q = friendRef.orderByChild("uid").equalTo(uid1); //todo: https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
+                    q.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            if (dataSnapshot.exists()) {
+                                User u = dataSnapshot.getValue(User.class);
+                                name = u.getName();
+                                nameofPerson[0] = name;
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
+
+
+                    friendRequests[0] = nameofPerson[0];
                 }
             }
 
