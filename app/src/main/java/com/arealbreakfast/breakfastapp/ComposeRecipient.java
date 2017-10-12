@@ -79,7 +79,7 @@ public class ComposeRecipient extends AppCompatActivity {
                             }
                         });
                     } else if ((mAuth.getCurrentUser() != null) && (friend.getUid2().equals(mAuth.getCurrentUser().getUid()))) {
-                        Query q = userRef.orderByChild("uid").equalTo(friend.getUid1()); //todo: https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
+                        Query q = userRef.orderByChild("uid").equalTo(friend.getUid1());
                         q.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

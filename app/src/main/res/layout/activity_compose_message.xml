@@ -7,18 +7,20 @@
     <include layout="@layout/custom_toolbar"/>
 
 
-    <TextView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="420sp"
-        android:id="@+id/mainmsgarea_tv"
+        android:layout_height="420dp"
+        android:id="@+id/mainmsgarea_lv"
         android:layout_below="@+id/custom_toolbar"
         />
 
     <EditText
-        android:layout_width="280sp"
+        android:layout_marginTop="20dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:id="@+id/newmsg_et"
-        android:layout_below="@+id/mainmsgarea_tv"
+        android:text="type a message"
+        android:layout_below="@+id/mainmsgarea_lv"
         />
 
     <Button
@@ -26,11 +28,10 @@
         android:layout_height="wrap_content"
         android:text="Send"
         android:id="@+id/newmsgSendButton"
-        android:layout_below="@+id/mainmsgarea_tv"
-        android:layout_toEndOf="@+id/newmsg_et"
         android:layout_marginLeft="5sp"
         android:onClick="sendMessage"
-        />
+        android:layout_alignTop="@+id/newmsg_et"
+        android:layout_toEndOf="@+id/newmsg_et" />
 
 
 

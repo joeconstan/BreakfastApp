@@ -16,7 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatLobby" />
         <activity android:name=".AddFriends">
 
             <meta-data
