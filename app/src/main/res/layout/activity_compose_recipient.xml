@@ -12,5 +12,4 @@
     android:id="@+id/compose_recipient_lv"
     > </ListView>
 
-
 </RelativeLayout>

@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -35,11 +36,28 @@ public class ComposeMessage extends BaseToolbarActivity {
 
 
         Intent intent = getIntent();
-        String recp = intent.getStringExtra("recp");
+        //String recp = intent.getStringExtra("recp");
 
 
         Query q = messagesRef.child(getKey()).orderByKey();
-        q.addChildEventListener(new ChildEventListener() {
+        q.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                                Message ms = postSnapshot   .getValue(Message.class);
+                                                allThemMessages.add(ms.getMessageUser() + ": " + ms.getMessageText() + "\n");
+                                            }
+                                            displayMessages();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+       /* q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
@@ -65,9 +83,9 @@ public class ComposeMessage extends BaseToolbarActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });
+        });*/
 
-        //messagesRef.push().setValue(msg);
+                //messagesRef.push().setValue(msg);
        /* messagesRef.push().setValue(msg, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError,
@@ -77,7 +95,7 @@ public class ComposeMessage extends BaseToolbarActivity {
                 });*/
 
 
-        //todo: set recp at top somewhere - toolbar if we can.
+                //todo: set recp at top somewhere - toolbar if we can.
 
     }
 
