@@ -43,6 +43,7 @@ public class ComposeMessage extends BaseToolbarActivity {
         q.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
+                                        allThemMessages.clear();
                                         if (dataSnapshot.exists()) {
                                             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                                 Message ms = postSnapshot   .getValue(Message.class);
@@ -155,9 +156,8 @@ public class ComposeMessage extends BaseToolbarActivity {
     public void displayMessages() {
         TextView tv = (TextView) findViewById(R.id.mainmsgarea_tv);
         String x = "";
-        int i = 0;
         for (String y : allThemMessages) {
-            x += allThemMessages.get(i);
+            x += y;
         }
         tv.setText(x);
     }
