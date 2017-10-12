@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="420sp"
         android:id="@+id/mainmsgarea_tv"
+        android:layout_below="@+id/custom_toolbar"
         />
 
     <EditText
@@ -27,7 +28,9 @@
         android:id="@+id/newmsgSendButton"
         android:layout_below="@+id/mainmsgarea_tv"
         android:layout_toEndOf="@+id/newmsg_et"
-        android:layout_marginLeft="5sp" />
+        android:layout_marginLeft="5sp"
+        android:onClick="sendMessage"
+        />
 
 
 

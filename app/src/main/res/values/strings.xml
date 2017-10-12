@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BreakfastApp</string>
+    <string name="app_name">Breakfast IM</string>
     <string name="title_activity_find_contacts">FindContacts</string>
     <string name="searchHint">Search by username</string>
     <string name="searchlabel">Hello</string>

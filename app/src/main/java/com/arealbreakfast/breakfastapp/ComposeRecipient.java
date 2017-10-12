@@ -46,7 +46,7 @@ public class ComposeRecipient extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
-                    Friend friend = dataSnapshot.getValue(Friend.class);
+                    final Friend friend = dataSnapshot.getValue(Friend.class);
                     if ((mAuth.getCurrentUser() != null) && (friend.getUid1().equals(mAuth.getCurrentUser().getUid()))) {
                         Log.v(TAG, "1 passed");
                         Query q = userRef.orderByChild("uid").equalTo(friend.getUid2()); //todo: https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
@@ -58,7 +58,7 @@ public class ComposeRecipient extends AppCompatActivity {
 
                                     name = u.getName();
                                     friends.add(name);
-                                    displayFriends(friends);
+                                    displayFriends(friends, friend.getUid1(), friend.getUid2());
                                 }
                             }
 
@@ -87,7 +87,7 @@ public class ComposeRecipient extends AppCompatActivity {
                                     User u = dataSnapshot.getValue(User.class);
                                     name = u.getName();
                                     friends.add(name);
-                                    displayFriends(friends);
+                                    displayFriends(friends, friend.getUid2(), friend.getUid1());
                                 }
                             }
 
@@ -134,7 +134,7 @@ public class ComposeRecipient extends AppCompatActivity {
     }
 
 
-    public void displayFriends(ArrayList<String> f) {
+    public void displayFriends(ArrayList<String> f, final String uid1, final String uid2) {
         ListView lv = (ListView) findViewById(R.id.compose_recipient_lv);
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, f);
         Log.v(TAG, "friends.get(0):-------  " + f.get(0));
@@ -146,10 +146,49 @@ public class ComposeRecipient extends AppCompatActivity {
 
                 String selectedName = adapter.getItem(position);
                 Intent intent = new Intent(view.getContext(), ComposeMessage.class);
+                String actualUID2 = getUidByName(selectedName);
                 intent.putExtra("recp", selectedName);
+                intent.putExtra("uid1", uid1);
+                intent.putExtra("uid2", actualUID2);
                 startActivity(intent);
             }
         });
 
+    }
+
+    private String getUidByName(String selectedName) {
+        Query q = userRef.orderByChild("name").equalTo(selectedName);
+        final ArrayList<String> ha = new ArrayList<>();
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists()) {
+                    User us = dataSnapshot.getValue(User.class);
+                    ha.add(us.getUid());
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return ha.get(0);
     }
 }
