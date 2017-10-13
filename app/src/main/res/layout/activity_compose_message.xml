@@ -19,7 +19,7 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:id="@+id/newmsg_et"
-        android:text="type a message"
+        android:hint="type a message"
         android:layout_below="@+id/mainmsgarea_lv"
         />
 

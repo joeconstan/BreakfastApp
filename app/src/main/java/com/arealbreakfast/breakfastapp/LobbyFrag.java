@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference messagesRef = rootRef.child("messages");
     final ArrayList<String> conversations = new ArrayList<>();
-
+    private static final String TAG = "lobbyfrag: ";
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -68,6 +69,10 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                                 if (dataSnapshot.exists()) {
                                     User u = dataSnapshot.getValue(User.class);
                                     conversations.add(u.getName()); //u.getname is null i think -- not working
+                                    Log.v(TAG, "u.getName(): " + u.getName());
+                                    ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
+                                    ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
+                                    lv.setAdapter(ad);
                                 }
                             }
 
