@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+
+    <TextView
+        android:id="@+id/friends_list_item"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_margin="4sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/acceptButton"
+        android:text="Add"
+        android:layout_toLeftOf="@+id/rejectButton"
+
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rejectButton"
+        android:text="Reject"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

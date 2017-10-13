@@ -46,7 +46,6 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
         //todo: this class does not update in real time, probably because friendsAL does not clear itself. where to clear it though?
-
         Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid()); //todo: the saame for uid2, and only if status = 1!
         q.addChildEventListener(new ChildEventListener() {
             @Override

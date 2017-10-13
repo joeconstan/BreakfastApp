@@ -1,12 +1,15 @@
 package com.arealbreakfast.breakfastapp;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +52,11 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lobby, container, false);
+
+        getActivity().startService(new Intent(getContext(), MessageService.class));
+
+
+
 
         //checking if chats exist for this user
         Query q = messagesRef.orderByKey();

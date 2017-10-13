@@ -32,7 +32,8 @@ public class FriendRequest extends FireBaseInformationFunctions {
     private DatabaseReference userRef = rootRef.child("users");
     private final static String TAG = "nameofPerson: ";
     final ArrayList<String> friendrequestsAL = new ArrayList<>();
-
+    String friendkey;
+    //todo: only show names if requested NOT by current user: need a requestedBy element in database?
 
     //friend codes:
     //0 - requested, no response
@@ -43,16 +44,16 @@ public class FriendRequest extends FireBaseInformationFunctions {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests);
-
+        stopService(new Intent(this, MessageService.class));
         ListView listView = (ListView) findViewById(R.id.friendrequestlv);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+                //take to user profile or something i dunno. implement way later.
             }
         });
 
-        Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid()); //todo: the saame for uid2, and only if status = 1!
+        Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid());
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -61,6 +62,7 @@ public class FriendRequest extends FireBaseInformationFunctions {
                     textView.setText("");
                     Friend friend = dataSnapshot.getValue(Friend.class);
                     if (friend.getStatus().equals("0")) {
+                        friendkey = dataSnapshot.getKey();
                         getNameandDisplay(friend.getUid2());
                     }
 
@@ -97,8 +99,7 @@ public class FriendRequest extends FireBaseInformationFunctions {
                 if (dataSnapshot.exists()) {
                     Friend friend = dataSnapshot.getValue(Friend.class);
                     if (friend.getStatus().equals("0")) {
-                        TextView textView = (TextView) findViewById(R.id.nofriendrequestsmsgtv);
-                        textView.setText("");
+                        friendkey = dataSnapshot.getKey();
                         getNameandDisplay(friend.getUid1());
                     }
 
@@ -131,6 +132,9 @@ public class FriendRequest extends FireBaseInformationFunctions {
 
     //gets name by the uid passed, adds it to friendsAL and displays friendsAL
     private void getNameandDisplay(String uid2) {
+        TextView textView = (TextView) findViewById(R.id.nofriendrequestsmsgtv);
+        textView.setText("");
+
         Query q = userRef.orderByChild("uid").equalTo(uid2);
         q.addChildEventListener(new ChildEventListener() {
             @Override
@@ -139,7 +143,7 @@ public class FriendRequest extends FireBaseInformationFunctions {
                     User user = dataSnapshot.getValue(User.class);
                     friendrequestsAL.add(user.getName());
                     ListView listView = (ListView) findViewById(R.id.friendrequestlv);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(FriendRequest.this, android.R.layout.simple_list_item_1, friendrequestsAL);
+                    FriendRequestAdapter adapter = new FriendRequestAdapter(friendrequestsAL, FriendRequest.this, friendkey);
                     listView.setAdapter(adapter);
 
                 }

@@ -44,6 +44,13 @@
         <activity android:name=".ComposeMessage">
 
         </activity>
+        <service android:name=".MessageService"/>
+        <receiver android:name=".MessageBroadcastReceiver" android:enabled="true">
+            <intent-filter>
+                <action android:name="newmessage" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

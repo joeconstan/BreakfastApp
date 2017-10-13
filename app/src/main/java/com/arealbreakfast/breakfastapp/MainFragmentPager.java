@@ -1,6 +1,7 @@
 package com.arealbreakfast.breakfastapp;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -26,6 +27,8 @@ public class MainFragmentPager extends FragmentActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewpager);
+        MessageBroadcastReceiver receiver = new MessageBroadcastReceiver();
+        registerReceiver(receiver, new IntentFilter("newmessage"));
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new LobbyPager(getSupportFragmentManager());

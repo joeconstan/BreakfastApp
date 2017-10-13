@@ -9,14 +9,14 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="420dp"
+        android:layout_height="320dp"
         android:id="@+id/mainmsgarea_lv"
         android:layout_below="@+id/custom_toolbar"
         />
 
     <EditText
         android:layout_marginTop="20dp"
-        android:layout_width="280dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/newmsg_et"
         android:hint="type a message"
