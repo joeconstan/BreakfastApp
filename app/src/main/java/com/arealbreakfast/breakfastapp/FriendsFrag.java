@@ -45,7 +45,7 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
         //todo: this class does not update in real time, probably because friendsAL does not clear itself. where to clear it though?
-        Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid()); //todo: the saame for uid2, and only if status = 1!
+        Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid());
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -62,28 +62,23 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
-
         //for uid2
-        Query w = friendRef.orderByChild("uid2").equalTo(mAuth.getCurrentUser().getUid()); //todo: only if status = 1!
+        Query w = friendRef.orderByChild("uid2").equalTo(mAuth.getCurrentUser().getUid());
         w.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -95,7 +90,6 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
                         getNameandDisplay(friend.getUid1());
                     }
 
-
                     ListView listView = (ListView) rootView.findViewById(R.id.friendslist_lv);
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.conversationsandfriends_list_item, R.id.conversationsandfriends_list_item, friendsAL);
                     listView.setAdapter(adapter);
@@ -104,22 +98,18 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 

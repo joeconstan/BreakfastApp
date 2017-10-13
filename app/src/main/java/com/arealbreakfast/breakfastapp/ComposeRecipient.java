@@ -49,7 +49,7 @@ public class ComposeRecipient extends AppCompatActivity {
                     final Friend friend = dataSnapshot.getValue(Friend.class);
                     if ((mAuth.getCurrentUser() != null) && (friend.getUid1().equals(mAuth.getCurrentUser().getUid()))) {
                         Log.v(TAG, "1 passed");
-                        Query q = userRef.orderByChild("uid").equalTo(friend.getUid2()); //todo: https://stackoverflow.com/questions/30659569/wait-until-firebase-retrieves-data
+                        Query q = userRef.orderByChild("uid").equalTo(friend.getUid2());
                         q.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

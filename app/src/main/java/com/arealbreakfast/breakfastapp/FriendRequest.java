@@ -33,7 +33,6 @@ public class FriendRequest extends FireBaseInformationFunctions {
     private final static String TAG = "nameofPerson: ";
     final ArrayList<String> friendrequestsAL = new ArrayList<>();
     String friendkey;
-    //todo: only show names if requested NOT by current user: need a requestedBy element in database?
 
     //friend codes:
     //0 - requested, no response
@@ -48,49 +47,11 @@ public class FriendRequest extends FireBaseInformationFunctions {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //take to user profile or something i dunno. implement way later.
-            }
-        });
-
-        Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid());
-        q.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()) {
-                    TextView textView = (TextView) findViewById(R.id.nofriendrequestsmsgtv);
-                    textView.setText("");
-                    Friend friend = dataSnapshot.getValue(Friend.class);
-                    if (friend.getStatus().equals("0")) {
-                        friendkey = dataSnapshot.getKey();
-                        getNameandDisplay(friend.getUid2());
-                    }
-
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+                //take to user profile or something i dunno. not important at this time.
             }
         });
 
 
-        //for uid2
         Query w = friendRef.orderByChild("uid2").equalTo(mAuth.getCurrentUser().getUid());
         w.addChildEventListener(new ChildEventListener() {
             @Override

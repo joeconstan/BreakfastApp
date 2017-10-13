@@ -150,7 +150,6 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo: pull up friends list and make clickable. if you click on one, opens up new message screen
                 Intent intent = new Intent(view.getContext(), ComposeRecipient.class);
                 startActivity(intent);
             }

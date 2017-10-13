@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       /* if (mAuth.getCurrentUser()!=null){
+            Intent intent = new Intent(this, MainFragmentPager.class);
+            startActivity(intent);
+        }*/
+
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String id = sharedPref.getString("uid", "");
         if (!id.equals("")) {
@@ -55,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                         User user = dataSnapshot.getValue(User.class);
                         un.setText(user.getName());
                         em.setText(user.getEmail());
-                        //todo: set focus to ps
                         //Login(new View(MainActivity.this));
 
                     }
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                        //todo: show a toast if device offline - rn it does nothing
+                        //todo: show a toast if device offline - rn it does nothing if you try to log in while offline
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(MainActivity.this, "login failed",

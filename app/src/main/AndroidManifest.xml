@@ -41,7 +41,8 @@
         <activity android:name=".ComposeRecipient">
 
         </activity>
-        <activity android:name=".ComposeMessage">
+        <activity android:name=".ComposeMessage"
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
         <service android:name=".MessageService"/>

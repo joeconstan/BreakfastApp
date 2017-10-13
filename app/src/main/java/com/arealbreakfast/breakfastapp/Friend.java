@@ -3,8 +3,8 @@ package com.arealbreakfast.breakfastapp;
 
 public class Friend {
 
-    private String uid1;
-    private String uid2;
+    private String uid1; //requester
+    private String uid2; //requestee
     private String status;
 
     public Friend() {

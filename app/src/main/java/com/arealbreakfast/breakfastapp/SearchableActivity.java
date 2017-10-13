@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class SearchableActivity extends ListActivity {
 
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -27,6 +29,7 @@ public class SearchableActivity extends ListActivity {
     private DatabaseReference friendRef = rootRef.child("friends");
     private final static String TAG = "queryResults: ";
     String globalUID = ""; //todo: jesus christ this shouldnt be global - instead pass it to our custom listview adapter without displaying it
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,6 @@ public class SearchableActivity extends ListActivity {
     }
 
     private void sendFriendRequest() {
-        //todo: create a record in friends table with uid of currentuser, uid of requested user, and status (0 for now)
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         String myUid = mAuth.getCurrentUser().getUid();
@@ -62,20 +64,17 @@ public class SearchableActivity extends ListActivity {
 
     public void SearchForUsers(String query) {
         //final User usersReturned[] = new User[1];
-        final String userNamesReturnedtemp[] = new String[1];
+        final ArrayList<String> userNamesReturned = new ArrayList<>();
         Query q = userRef.orderByChild("name").equalTo(query);
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
                 Log.v(TAG, user.getName());
-                userNamesReturnedtemp[0] = user.getName();
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchableActivity.this, android.R.layout.simple_list_item_1, userNamesReturnedtemp);
+                userNamesReturned.add(user.getName());
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchableActivity.this, android.R.layout.simple_list_item_1, userNamesReturned);
                 setListAdapter(adapter);
                 globalUID = user.getUid();
-
-
-                //todo: allow # of users returned to be dynamic
             }
 
             @Override
@@ -98,21 +97,6 @@ public class SearchableActivity extends ListActivity {
 
             }
         });
-        /*q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    User user = dataSnapshot.getValue(User.class);
-                    Log.v(TAG, user.getName().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-        ListView lv = (ListView) findViewById(android.R.id.list);
 
     }
 }
