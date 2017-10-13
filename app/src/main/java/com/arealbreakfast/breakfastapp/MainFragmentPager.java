@@ -20,7 +20,7 @@ public class MainFragmentPager extends FragmentActivity {
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-    
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
