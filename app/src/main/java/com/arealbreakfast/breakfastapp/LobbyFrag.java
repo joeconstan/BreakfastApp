@@ -81,7 +81,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                                     conversations.add(u.getName()); //u.getname is null i think -- not working
                                     Log.v(TAG, "u.getName(): " + u.getName());
                                     ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
-                                    ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
+                                    ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), R.layout.conversationsandfriends_list_item, R.id.conversationsandfriends_list_item, conversations);
                                     lv.setAdapter(ad);
                                 }
                             }

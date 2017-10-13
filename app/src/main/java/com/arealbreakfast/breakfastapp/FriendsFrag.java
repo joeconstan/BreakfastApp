@@ -33,7 +33,6 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference friendRef = rootRef.child("friends");
     private static final String TAG = "friendsfrag: ";
-
     final ArrayList<String> friendsAL = new ArrayList<>();
 
     @Override
@@ -98,7 +97,7 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
 
 
                     ListView listView = (ListView) rootView.findViewById(R.id.friendslist_lv);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, friendsAL);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.conversationsandfriends_list_item, R.id.conversationsandfriends_list_item, friendsAL);
                     listView.setAdapter(adapter);
                 }
             }
@@ -147,7 +146,7 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
                     User user = dataSnapshot.getValue(User.class);
                     friendsAL.add(user.getName());
                     ListView listView = (ListView) getActivity().findViewById(R.id.friendslist_lv);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, friendsAL);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.conversationsandfriends_list_item, R.id.conversationsandfriends_list_item, friendsAL);
                     listView.setAdapter(adapter);
 
                 }

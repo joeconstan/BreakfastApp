@@ -1,15 +1,9 @@
 package com.arealbreakfast.breakfastapp;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -37,8 +31,13 @@ public class MessageService extends Service {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Intent intent = new Intent("newmessage");
-                sendBroadcast(intent);
+                if (dataSnapshot.exists()) {
+                    Message m = dataSnapshot.getValue(Message.class);
+                    Intent intent = new Intent("newmessage");
+                    intent.putExtra("messageText", m.getMessageText());
+                    sendBroadcast(intent);
+                }
+
             }
 
             @Override

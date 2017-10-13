@@ -18,6 +18,8 @@
         />
 
     <ListView
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/friendslist_lv"

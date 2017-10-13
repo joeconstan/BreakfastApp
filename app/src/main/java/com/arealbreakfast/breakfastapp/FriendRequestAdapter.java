@@ -9,13 +9,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
@@ -25,7 +20,7 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
     private String key;
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    //private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference friendRef = rootRef.child("friends");
 
@@ -62,7 +57,7 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
             Button rejectButton = (Button) view.findViewById(R.id.rejectButton);
             TextView textView = (TextView) view.findViewById(R.id.friends_list_item);
             textView.setText(getItem(position).toString());
-            //onclick: reload page so friend request disapears, & set status to 1
+            //todo: make friend request disappear from view onclick of either button
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -73,7 +68,7 @@ public class FriendRequestAdapter extends BaseAdapter implements ListAdapter {
             rejectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    friendRef.child(key).child("status").setValue("2");
                 }
             });
         }

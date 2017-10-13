@@ -44,7 +44,6 @@ public class FriendRequest extends FireBaseInformationFunctions {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests);
-        stopService(new Intent(this, MessageService.class));
         ListView listView = (ListView) findViewById(R.id.friendrequestlv);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

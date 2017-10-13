@@ -20,11 +20,12 @@ public class MessageBroadcastReceiver extends BroadcastReceiver {
         Log.v(TAG, "Broadcast received: " + action);
 
         if (action.equals("newmessage")) {
+            String messageText = intent.getStringExtra("messageText");
             android.support.v4.app.NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.mipmap.icon_bubble)
                             .setContentTitle("my title")
-                            .setContentText("like this notification? ;)")
+                            .setContentText(messageText)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .setDefaults(Notification.DEFAULT_ALL);
 
