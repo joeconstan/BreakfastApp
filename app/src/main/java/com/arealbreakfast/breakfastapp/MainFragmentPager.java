@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -19,6 +20,7 @@ public class MainFragmentPager extends FragmentActivity {
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +42,14 @@ public class MainFragmentPager extends FragmentActivity {
             }
         });
 
+
     }
 
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
-            super.onBackPressed();
+            this.finishAffinity();
+            //super.onBackPressed();
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
@@ -90,6 +94,9 @@ public class MainFragmentPager extends FragmentActivity {
         public int getCount() {
             return NUM_PAGES;
         }
+
+
     }
+
 }
 

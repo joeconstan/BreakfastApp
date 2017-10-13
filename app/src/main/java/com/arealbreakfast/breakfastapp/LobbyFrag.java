@@ -38,6 +38,8 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     private DatabaseReference messagesRef = rootRef.child("messages");
     final ArrayList<String> conversations = new ArrayList<>();
     private static final String TAG = "lobbyfrag: ";
+    Intent intent; //if doesnt work can make just Intent intent; and assign later
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -99,13 +101,16 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
 
 
                         ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
-                        ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
+                        final ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
                         lv.setAdapter(ad);
-
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                                intent = new Intent(view.getContext(), ComposeMessage.class);
+                                intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
+                                intent.putExtra("recp", ad.getItem(position));
+                                putUidByName(ad.getItem(position));
                             }
                         });
                     }
@@ -144,10 +149,41 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
         });
 
 
-
-
-
         return rootView;
+    }
+
+    private void putUidByName(String userName) {
+        Query q = userRef.orderByChild("name").equalTo(userName);
+        q.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    intent.putExtra("uid2", user.getUid());
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

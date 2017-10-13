@@ -99,7 +99,7 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
 
 
                     ListView listView = (ListView) rootView.findViewById(R.id.friendslist_lv);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, friendsAL);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, friendsAL);
                     listView.setAdapter(adapter);
                 }
             }
