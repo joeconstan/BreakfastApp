@@ -46,16 +46,6 @@ public class FriendsFrag extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
 
-        ImageButton friend_request = (ImageButton) rootView.findViewById(R.id.toolbar_friend_request_button);
-        //set onclick for friend request button in toolbar
-        friend_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FriendRequest.class);
-                startActivity(intent);
-            }
-        });
-
 
         //todo: this class does not update in real time, probably because friendsAL does not clear itself. where to clear it though?
         Query q = friendRef.orderByChild("uid1").equalTo(mAuth.getCurrentUser().getUid());

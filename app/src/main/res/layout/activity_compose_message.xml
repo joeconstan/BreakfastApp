@@ -4,14 +4,51 @@
     android:background="@drawable/backgroundrevised"
     >
 
-    <include layout="@layout/custom_toolbar"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarcomposemessage"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        >
 
-<TextView
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/toolbartext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Breakfast IM"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <ImageButton
+                android:id="@+id/toolbar_friend_request_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="20sp"
+                android:background="@null"
+                android:paddingRight="5sp"
+                android:src="@drawable/ic_friend_request"
+
+                />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/spacer"
     android:layout_marginBottom="8dp"
-    android:layout_below="@+id/custom_toolbar"
+    android:layout_below="@+id/toolbarcomposemessage"
     />
 
     <ListView

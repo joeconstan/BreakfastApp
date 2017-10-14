@@ -58,17 +58,6 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_lobby, container, false);
         getActivity().startService(new Intent(getContext(), MessageService.class));
 
-        ImageButton friend_request = (ImageButton) rootView.findViewById(R.id.toolbar_friend_request_button);
-
-        //set onclick for friend request button in toolbar
-        friend_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FriendRequest.class);
-                startActivity(intent);
-            }
-        });
-
 
         //checking if chats exist for this user
         Query q = messagesRef.orderByKey();
@@ -176,7 +165,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
         q.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     User user = dataSnapshot.getValue(User.class);
                     intent.putExtra("uid2", user.getUid());
                     startActivity(intent);

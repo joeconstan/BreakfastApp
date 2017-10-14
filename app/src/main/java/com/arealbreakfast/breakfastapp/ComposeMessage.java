@@ -3,10 +3,11 @@ package com.arealbreakfast.breakfastapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,8 +37,10 @@ public class ComposeMessage extends BaseToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_message);
 
-        //Intent intent = getIntent();
-        //String recp = intent.getStringExtra("recp");
+        //set toolbar text to name of recipient
+        TextView toolbarText = (TextView) findViewById(R.id.toolbartext);
+        toolbarText.setText(getIntent().getStringExtra("recp"));
+
 
 
         Query q = messagesRef.child(getKey()).orderByKey();
