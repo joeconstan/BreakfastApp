@@ -4,11 +4,13 @@ package com.arealbreakfast.breakfastapp;
 import java.util.Date;
 
 public class Message {
-
+ //0-unread
+//1-read
     public String messageText;
     public String messageUser;
     public Long messageTime;
     public String messageRecipient;
+    public int read;
 
 
 
@@ -17,6 +19,7 @@ public class Message {
         this.messageUser = messageUser;
         this.messageRecipient = messageRecipient;
         this.messageTime = new Date().getTime();
+        this.read = 0;
     }
     public Message(){
 

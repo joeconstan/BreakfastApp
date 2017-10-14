@@ -1,9 +1,5 @@
 package com.arealbreakfast.breakfastapp;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -16,9 +12,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.NotificationCompat;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -28,7 +21,6 @@ public class MainFragmentPager extends FragmentActivity {
     private static final int NUM_PAGES = 2;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
-    private static final String TAG = "hey1: ";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,16 +37,6 @@ public class MainFragmentPager extends FragmentActivity {
         mPager.setAdapter(mPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabss);
         tabLayout.setupWithViewPager(mPager);
-
-        ImageButton friend_request = (ImageButton) findViewById(R.id.toolbar_friend_request_button);
-        friend_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), FriendRequest.class);
-                startActivity(intent);
-            }
-        });
-
 
     }
 

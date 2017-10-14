@@ -6,6 +6,34 @@
     >
 
 
+   <!-- <include layout="@layout/custom_toolbar"/> maybe include it like this but try changing the textview instead of the title?-->
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarfriendrequests"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/toolbartext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Friend Requests"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
 
     <TextView
         android:layout_width="wrap_content"

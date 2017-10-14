@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +24,7 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
-public class FriendRequest extends FireBaseInformationFunctions {
+public class FriendRequest extends AppCompatActivity {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -43,6 +44,13 @@ public class FriendRequest extends FireBaseInformationFunctions {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests);
+
+        /*Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        mActionBarToolbar.setTitle("");
+        setSupportActionBar(mActionBarToolbar);
+        mActionBarToolbar.setTitle("Friend Requests");*/
+
+
         ListView listView = (ListView) findViewById(R.id.friendrequestlv);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

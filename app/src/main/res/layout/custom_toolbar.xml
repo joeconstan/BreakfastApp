@@ -35,19 +35,6 @@
              android:src="@drawable/ic_friend_request"
 
              />
-        <!--
-                 <ImageButton
-                     android:id="@+id/toolbar_removeads_button"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_alignParentEnd="true"
-                     android:layout_alignParentRight="true"
-                     android:layout_alignParentTop="true"
-                     android:background="@null"
-                     android:onClick="settingsClick"
-                     android:paddingRight="20sp"
-                     android:src="@drawable/icon_remove_ads" />
-                 -->
     </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>
