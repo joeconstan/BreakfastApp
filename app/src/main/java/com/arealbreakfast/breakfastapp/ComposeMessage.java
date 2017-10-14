@@ -28,6 +28,7 @@ public class ComposeMessage extends BaseToolbarActivity {
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference messagesRef = rootRef.child("messages");
     final ArrayList<String> friends = new ArrayList<>();
+    final ArrayList<Integer> msgUserKeys = new ArrayList<>(); //1: current user 0: other person
     ArrayList<String> allThemMessages = new ArrayList<>();
 
     @Override
@@ -35,7 +36,7 @@ public class ComposeMessage extends BaseToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_message);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         //String recp = intent.getStringExtra("recp");
 
 
@@ -44,10 +45,16 @@ public class ComposeMessage extends BaseToolbarActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allThemMessages.clear();
+                msgUserKeys.clear();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Message ms = postSnapshot.getValue(Message.class);
-                        allThemMessages.add(ms.getMessageUser() + ": " + ms.getMessageText() + "\n");
+                        allThemMessages.add(ms.getMessageText() + "\n");
+                        if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
+                            msgUserKeys.add(1);
+                        }
+                        else
+                            msgUserKeys.add(0);
                     }
                     displayMessages();
                 }
@@ -58,42 +65,6 @@ public class ComposeMessage extends BaseToolbarActivity {
 
             }
         });
-       /* q.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if (dataSnapshot.exists()) {
-                    Message ms = dataSnapshot.getValue(Message.class);
-                    allThemMessages.add(ms.getMessageUser() + ": " + ms.getMessageText() + "\n");
-                    displayMessages();
-                }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
-
-        //messagesRef.push().setValue(msg);
-       /* messagesRef.push().setValue(msg, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError,
-                                           DatabaseReference databaseReference) {
-                        String uniqueKey = databaseReference.getKey();
-                    }
-                });*/
 
 
         //todo: set recp at top somewhere - toolbar if we can.
@@ -133,7 +104,7 @@ public class ComposeMessage extends BaseToolbarActivity {
 
     public void displayMessages() {
         ListView lv = (ListView) findViewById(R.id.mainmsgarea_lv);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.messages_list_item, R.id.messages_list_item, allThemMessages);
+        MessageAdapter adapter = new MessageAdapter(this, allThemMessages, msgUserKeys);
         lv.setAdapter(adapter);
     }
 }
