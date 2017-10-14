@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -17,6 +19,7 @@ public class MessageService extends Service {
 
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference messagesRef = rootRef.child("messages");
+    private static final String TAG = "hey1: ";
 
     @Nullable
     @Override
@@ -26,22 +29,71 @@ public class MessageService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service started!", Toast.LENGTH_SHORT).show();
         messagesRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) { //todo: only fires once cuz only 1 child is added: the convo. not the msgs.
                 if (dataSnapshot.exists()) {
-                    Message m = dataSnapshot.getValue(Message.class);
-                    Intent intent = new Intent("newmessage");
-                    intent.putExtra("messageText", m.getMessageText());
-                    sendBroadcast(intent);
+                    final Message m = dataSnapshot.getValue(Message.class);
+                    //making a listener for the individ messages in this found convo
+                    String k = dataSnapshot.getKey();
+                    messagesRef.child(k).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            if (dataSnapshot.exists()) {
+                                final Message e = dataSnapshot.getValue(Message.class);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent("newmessage");
+                                        intent.putExtra("messageText", e.getMessageText());
+                                        sendBroadcast(intent);
+                                        //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                                        Log.v(TAG, "sent broadcast from service");
+                                    }
+                                }).start();
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent("newmessage");
+                            intent.putExtra("messageText", m.getMessageText());
+                            sendBroadcast(intent);
+                            //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                            Log.v(TAG, "sent broadcast from service");
+                        }
+                    }).start();
                 }
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -57,9 +109,8 @@ public class MessageService extends Service {
             }
         });
 
-        return START_STICKY;
 
-        //return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
 
     @Override
