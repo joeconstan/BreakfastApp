@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,7 +78,19 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        mAuth = FirebaseAuth.getInstance();
+
+        TextView forgotpasswordtv = (TextView) findViewById(R.id.forgotpasswordtv);
+        forgotpasswordtv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.sendPasswordResetEmail(mAuth.getCurrentUser().getEmail());
+                Toast.makeText(MainActivity.this, "Password Reset Email Sent", Toast.LENGTH_SHORT).show();
+                //Intent in = new Intent(v.getContext(), ForgotPassword.class);
+                //startActivity(in);
+            }
+        });
+
+        mAuth = FirebaseAuth.getInstance(); //todo: add funtionality here to auto log in?
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(FirebaseAuth firebaseAuth) {

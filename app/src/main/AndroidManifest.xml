@@ -54,6 +54,9 @@
         <activity android:name=".Settings">
 
         </activity>
+        <activity android:name=".ForgotPassword">
+
+        </activity>
     </application>
 
 </manifest>

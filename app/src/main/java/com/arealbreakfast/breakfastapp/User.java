@@ -8,7 +8,6 @@ public class User {
     private String name;
     private String email;
     private String uid;
-    private Bitmap picture;
 
 
     public User() {
@@ -33,11 +32,4 @@ public class User {
         return uid;
     }
 
-    public Bitmap getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Bitmap picture) {
-        this.picture = picture;
-    }
 }
