@@ -38,6 +38,25 @@ public class MainFragmentPager extends FragmentActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabss);
         tabLayout.setupWithViewPager(mPager);
 
+
+        ImageButton friend_request = (ImageButton) findViewById(R.id.toolbar_friend_request_button);
+        friend_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FriendRequest.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton settingsButton = (ImageButton) findViewById(R.id.toolbar_settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Settings.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

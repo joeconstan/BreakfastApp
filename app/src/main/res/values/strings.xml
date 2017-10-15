@@ -3,4 +3,5 @@
     <string name="title_activity_find_contacts">FindContacts</string>
     <string name="searchHint">Search by username</string>
     <string name="searchlabel">Hello</string>
+    <string name="type_a_message">type a message</string>
 </resources>

@@ -1,15 +1,17 @@
 package com.arealbreakfast.breakfastapp;
 
 
+import android.graphics.Bitmap;
+
 public class User {
 
     private String name;
     private String email;
     private String uid;
+    private Bitmap picture;
 
 
     public User() {
-
     }
 
 
@@ -29,5 +31,13 @@ public class User {
 
     public String getUid() {
         return uid;
+    }
+
+    public Bitmap getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Bitmap picture) {
+        this.picture = picture;
     }
 }
