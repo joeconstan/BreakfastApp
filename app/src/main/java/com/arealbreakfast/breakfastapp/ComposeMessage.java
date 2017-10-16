@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ComposeMessage extends BaseToolbarActivity {
 
-
+    private String uniqueKey;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
@@ -51,8 +51,10 @@ public class ComposeMessage extends BaseToolbarActivity {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Message ms = postSnapshot.getValue(Message.class);
                         if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
-                            //ms.setRead(1);
-                            //messagesRef.child(getKey()).setValue(ms);
+                            ms.setRead(1);
+                            String k = postSnapshot.getKey();
+                            messagesRef.child(getKey()).child(k).setValue(ms);
+                            //todo: messagesRef.child(getKey()).child(uniquekey).setValue(ms); but this wont work cuz oncreate uniquekey hasnt been set...shittt
 
                         }
                         allThemMessages.add(ms.getMessageText() + "\n");
@@ -72,8 +74,6 @@ public class ComposeMessage extends BaseToolbarActivity {
         });
 
 
-        //todo: set recp at top somewhere - toolbar if we can.
-
     }
 
     private String getKey() {
@@ -89,7 +89,6 @@ public class ComposeMessage extends BaseToolbarActivity {
     }
 
     public void sendMessage(View view) {
-//schema changed somehow - should be by convo, not by msg
         final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
         String messageText = msgText.getText().toString();
         String messageUser = mAuth.getCurrentUser().getDisplayName();
@@ -100,7 +99,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             @Override
             public void onComplete(DatabaseError databaseError,
                                    DatabaseReference databaseReference) {
-                String uniqueKey = databaseReference.getKey();
+                uniqueKey = databaseReference.getKey();
                 msgText.setText("");
             }
         });
