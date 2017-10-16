@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/settingslayout"
     android:background="@drawable/backgroundrevised">
 
     <android.support.v7.widget.Toolbar
@@ -51,7 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="name"
-        android:textColor="#FFFFFF"
         android:layout_below="@+id/custom_toolbar_settings"
         />
 
@@ -67,7 +67,6 @@
         android:id="@+id/settingsChangeBackgroundtv"
         android:layout_width="wrap_content"
         android:text="Change Background"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
@@ -78,7 +77,6 @@
         android:id="@+id/settingsChangePasswordtv"
         android:layout_width="wrap_content"
         android:text="Change Password"
-        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"

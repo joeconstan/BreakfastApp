@@ -1,7 +1,10 @@
 package com.arealbreakfast.breakfastapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +17,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 
 public class MainFragmentPager extends FragmentActivity {
@@ -27,10 +31,10 @@ public class MainFragmentPager extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewpager);
         MessageBroadcastReceiver receiver = new MessageBroadcastReceiver();
-        //registerReceiver(receiver, new IntentFilter("newmessage"));
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiver,
                 new IntentFilter("newmessage"));
+
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new LobbyPager(getSupportFragmentManager());

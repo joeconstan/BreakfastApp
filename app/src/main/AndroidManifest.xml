@@ -57,6 +57,9 @@
         <activity android:name=".ForgotPassword">
 
         </activity>
+        <activity android:name=".BackgroundColor">
+
+        </activity>
     </application>
 
 </manifest>

@@ -1,8 +1,11 @@
 package com.arealbreakfast.breakfastapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -92,10 +96,31 @@ public class Settings extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        SharedPreferences settings = getSharedPreferences("settings",
+                Context.MODE_PRIVATE);
+        String colorId = settings.getString("backgroundcolor", "#FFFFFF");
+        if (!colorId.equals("")) {
+            RelativeLayout settingslayout = (RelativeLayout) findViewById(R.id.settingslayout);
+            settingslayout.setBackgroundColor(Color.parseColor(colorId));
+        }
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        SharedPreferences settings = getSharedPreferences("settings",
+                Context.MODE_PRIVATE);
+        String colorId = settings.getString("backgroundcolor", "#FFFFFF");
+        if (!colorId.equals("")) {
+            RelativeLayout settingslayout = (RelativeLayout) findViewById(R.id.settingslayout);
+            settingslayout.setBackgroundColor(Color.parseColor(colorId));
+        }
         EditText username = (EditText) findViewById(R.id.settingsName);
         username.setText(mAuth.getCurrentUser().getDisplayName());
         final ImageButton imageButton = (ImageButton) findViewById(R.id.settingsImageButton);
@@ -105,7 +130,8 @@ public class Settings extends AppCompatActivity {
         backgroundtv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), BackgroundColor.class);
+                startActivity(intent);
             }
         });
         TextView passwordtv = (TextView) findViewById(R.id.settingsChangePasswordtv);
@@ -115,7 +141,6 @@ public class Settings extends AppCompatActivity {
 
             }
         });
-
 
 
         imageButton.setOnClickListener(new View.OnClickListener() {
