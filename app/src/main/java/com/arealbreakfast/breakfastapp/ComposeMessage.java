@@ -78,7 +78,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             });
 
 
-        } else {
+        } else { //it is a group message
             Query q = groupMsgRef.child(getGroupKey()).orderByKey();
             q.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -87,12 +87,17 @@ public class ComposeMessage extends BaseToolbarActivity {
                     msgUserKeys.clear();
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) { //todo: everytime a msg is sent does this reload every msg? way too much overhead
-                            Message ms = postSnapshot.getValue(Message.class);
-                            if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
-                                ms.setRead(1);
-                                String k = postSnapshot.getKey();
-                                groupMsgRef.child(getKey()).child(k).setValue(ms);
-
+                            GroupMessage ms = postSnapshot.getValue(GroupMessage.class);
+                            int i = 0;
+                            for (String x : ms.getMessageRecipient()) {
+                                if (x.equals(mAuth.getCurrentUser().getUid())) {
+                                    ArrayList<Integer> read = ms.getRead();
+                                    read.set(i, 1);
+                                    ms.setRead(read);
+                                    String k = postSnapshot.getKey();
+                                    groupMsgRef.child(getKey()).child(k).setValue(ms);
+                                }
+                                i++;
                             }
                             allThemMessages.add(ms.getMessageText() + "\n");
                             if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
@@ -150,14 +155,13 @@ public class ComposeMessage extends BaseToolbarActivity {
             Message msg = new Message(messageText, messageUser, messageRecipient);
             messagesRef.child(getKey()).push().setValue(msg);
             msgText.setText("");
-        } else
-        {   //todo: modify this chunk
+        } else {   //todo: modify this chunk && display messages in lobby or wherever from group msgs
             final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
             String messageText = msgText.getText().toString();
             String messageUser = mAuth.getCurrentUser().getDisplayName();
             ArrayList<String> messageRecipients = getIntent().getStringArrayListExtra("groupuids");
             GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients);
-            groupMsgRef.child(getKey()).push().setValue(msg);
+            groupMsgRef.child(getGroupKey()).push().setValue(msg);
             msgText.setText("");
         }
 

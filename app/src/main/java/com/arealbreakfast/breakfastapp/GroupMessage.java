@@ -11,7 +11,7 @@ public class GroupMessage {
     public String messageUser;
     public Long messageTime;
     public ArrayList<String> messageRecipient;
-    public int[] read;
+    public ArrayList<Integer> read;
 
 
     public GroupMessage(String messageText, String messageUser, ArrayList<String> messageRecipient) {
@@ -19,8 +19,8 @@ public class GroupMessage {
         this.messageUser = messageUser;
         this.messageRecipient = messageRecipient;
         this.messageTime = new Date().getTime();
-        for (int i = 0; i < read.length; i++) {
-            this.read[i] = 0;
+        for (int i = 0; i < read.size(); i++) {
+            this.read.set(i, 0);
         }
     }
 
@@ -40,11 +40,11 @@ public class GroupMessage {
         return messageUser;
     }
 
-    public int[] getRead() {
+    public ArrayList<Integer> getRead() {
         return read;
     }
 
-    public void setRead(int[] read) {
+    public void setRead(ArrayList<Integer> read) {
         this.read = read;
     }
 

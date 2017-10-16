@@ -43,6 +43,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference messagesRef = rootRef.child("messages");
+    private DatabaseReference groupMsgRef = rootRef.child("groupmessages");
     final ArrayList<String> conversations = new ArrayList<>();
     final ArrayList<String> uids = new ArrayList<>();
     private static final String TAG = "lobbyfrag: ";
@@ -74,8 +75,8 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                         nomsgstv.setText("");
 
 
-                        Query q = userRef.orderByChild("uid").equalTo(otherUid);
-                        q.addChildEventListener(new ChildEventListener() {
+                        Query r = userRef.orderByChild("uid").equalTo(otherUid);
+                        r.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 if (dataSnapshot.exists()) {
@@ -148,6 +149,113 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
 
             }
         });
+
+
+
+        //checking if group chats exist for this user
+        Query w = groupMsgRef.orderByKey();
+        w.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.exists()) {
+                    String key = dataSnapshot.getKey();
+                    if (key.contains(mAuth.getCurrentUser().getUid())) {
+                        String otherUid = key.replace(mAuth.getCurrentUser().getUid(), "");
+                        //Message m = dataSnapshot.getValue(Message.class); //todo : get name by uid & remove messageRecipient from message.class
+                        TextView nomsgstv = (TextView) rootView.findViewById(R.id.nomsgsmsgtv);
+                        nomsgstv.setText("");
+
+
+                        Query a = userRef.orderByChild("uid").equalTo(otherUid);
+                        a.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                if (dataSnapshot.exists()) {
+                                    User u = dataSnapshot.getValue(User.class);
+                                    conversations.add(u.getName());
+                                    uids.add(u.getUid());
+                                    Log.v(TAG, "u.getName(): " + u.getName());
+                                    ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
+                                    ConversationListAdapter ad = new ConversationListAdapter(getContext(), conversations, uids);
+                                    lv.setAdapter(ad);
+                                }
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                        ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
+                        final ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
+                        lv.setAdapter(ad);
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                //todo: modify this chunk for group msgs
+                                intent = new Intent(view.getContext(), ComposeMessage.class);
+                                intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
+                                intent.putExtra("recp", ad.getItem(position));
+                                putUidByName(ad.getItem(position));
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabl);
         fab.setOnClickListener(new View.OnClickListener() {
