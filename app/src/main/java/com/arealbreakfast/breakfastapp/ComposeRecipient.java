@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,16 @@ public class ComposeRecipient extends AppCompatActivity {
 
         final Intent intent = new Intent(this, ComposeMessage.class);
         final ArrayList<String> friends = new ArrayList<>();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabgroupmsg);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(view.getContext(), NewGroup.class); //todo: then, pass to composemessage with extra intent data?
+                startActivity(in);
+            }
+        });
+
 
         Query q = friendRef.orderByChild("status").equalTo("1");
         q.addChildEventListener(new ChildEventListener() {

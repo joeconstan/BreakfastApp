@@ -3,6 +3,8 @@ package com.arealbreakfast.breakfastapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,10 +24,12 @@ import java.util.ArrayList;
 
 public class ComposeMessage extends BaseToolbarActivity {
 
+    private static final String TAG = "recp: ";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference messagesRef = rootRef.child("messages");
+    private DatabaseReference groupMsgRef = rootRef.child("groupmessages");
     final ArrayList<String> friends = new ArrayList<>();
     final ArrayList<Integer> msgUserKeys = new ArrayList<>(); //1: current user 0: other person
     ArrayList<String> allThemMessages = new ArrayList<>();
@@ -38,42 +42,93 @@ public class ComposeMessage extends BaseToolbarActivity {
         //set toolbar text to name of recipient
         TextView toolbarText = (TextView) findViewById(R.id.toolbartext);
         toolbarText.setText(getIntent().getStringExtra("recp"));
+        Log.v(TAG, getIntent().getStringExtra("recp"));
 
 
-        Query q = messagesRef.child(getKey()).orderByKey();
-        q.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                allThemMessages.clear();
-                msgUserKeys.clear();
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) { //todo: everytime a msg is sent does this reload every msg? way too much overhead
-                        Message ms = postSnapshot.getValue(Message.class);
-                        if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
-                            ms.setRead(1);
-                            String k = postSnapshot.getKey();
-                            messagesRef.child(getKey()).child(k).setValue(ms);
+        if (getIntent().getIntExtra("isgroup", 0) == 0) {
+            Query q = messagesRef.child(getKey()).orderByKey();
+            q.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    allThemMessages.clear();
+                    msgUserKeys.clear();
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) { //todo: everytime a msg is sent does this reload every msg? way too much overhead
+                            Message ms = postSnapshot.getValue(Message.class);
+                            if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
+                                ms.setRead(1);
+                                String k = postSnapshot.getKey();
+                                messagesRef.child(getKey()).child(k).setValue(ms);
 
+                            }
+                            allThemMessages.add(ms.getMessageText() + "\n");
+                            if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
+                                msgUserKeys.add(1);
+                            } else
+                                msgUserKeys.add(0);
                         }
-                        allThemMessages.add(ms.getMessageText() + "\n");
-                        if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
-                            msgUserKeys.add(1);
-                        } else
-                            msgUserKeys.add(0);
+                        displayMessages();
                     }
-                    displayMessages();
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
+
+        } else {
+            Query q = groupMsgRef.child(getGroupKey()).orderByKey();
+            q.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    allThemMessages.clear();
+                    msgUserKeys.clear();
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) { //todo: everytime a msg is sent does this reload every msg? way too much overhead
+                            Message ms = postSnapshot.getValue(Message.class);
+                            if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
+                                ms.setRead(1);
+                                String k = postSnapshot.getKey();
+                                groupMsgRef.child(getKey()).child(k).setValue(ms);
+
+                            }
+                            allThemMessages.add(ms.getMessageText() + "\n");
+                            if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
+                                msgUserKeys.add(1);
+                            } else
+                                msgUserKeys.add(0);
+                        }
+                        displayMessages();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
     }
 
+    //create key by taking the entire creator uid plus the first 5 (6?) digits of each uid
+    private String getGroupKey() {
+        Intent intent = getIntent();
+        String uid1 = intent.getStringExtra("uid1");
+        ArrayList<String> uids = intent.getStringArrayListExtra("groupuids");
+        String key = uid1;
+
+        for (String x : uids) {
+            key += x.substring(0, 5);
+        }
+
+        return key;
+    }
+
+    //create key by combining the two uids alphabetically
     private String getKey() {
         Intent intent = getIntent();
         String uid1 = intent.getStringExtra("uid1");
@@ -87,20 +142,24 @@ public class ComposeMessage extends BaseToolbarActivity {
     }
 
     public void sendMessage(View view) {
-        final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
-        String messageText = msgText.getText().toString();
-        String messageUser = mAuth.getCurrentUser().getDisplayName();
-        String messageRecipient = getIntent().getStringExtra("uid2");
-        //Query q = userRef.orderByChild("uid").equalTo();
-        Message msg = new Message(messageText, messageUser, messageRecipient);
-        messagesRef.child(getKey()).push().setValue(msg, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError,
-                                   DatabaseReference databaseReference) {
-                //String uniqueKey = databaseReference.getKey();
-                msgText.setText("");
-            }
-        });
+        if (getIntent().getIntExtra("isgroup", 0) == 0) {
+            final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
+            String messageText = msgText.getText().toString();
+            String messageUser = mAuth.getCurrentUser().getDisplayName();
+            String messageRecipient = getIntent().getStringExtra("uid2");
+            Message msg = new Message(messageText, messageUser, messageRecipient);
+            messagesRef.child(getKey()).push().setValue(msg);
+            msgText.setText("");
+        } else
+        {   //todo: modify this chunk
+            final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
+            String messageText = msgText.getText().toString();
+            String messageUser = mAuth.getCurrentUser().getDisplayName();
+            ArrayList<String> messageRecipients = getIntent().getStringArrayListExtra("groupuids");
+            GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients);
+            groupMsgRef.child(getKey()).push().setValue(msg);
+            msgText.setText("");
+        }
 
     }
 

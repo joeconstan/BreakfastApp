@@ -60,6 +60,12 @@
         <activity android:name=".BackgroundColor">
 
         </activity>
+        <activity android:name=".ChangePassword">
+
+        </activity>
+        <activity android:name=".NewGroup">
+
+        </activity>
     </application>
 
 </manifest>
