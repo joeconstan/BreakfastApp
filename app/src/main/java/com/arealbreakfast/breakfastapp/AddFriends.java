@@ -1,5 +1,6 @@
 package com.arealbreakfast.breakfastapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -12,4 +13,5 @@ public class AddFriends extends AppCompatActivity {
         onSearchRequested();
 
     }
+
 }

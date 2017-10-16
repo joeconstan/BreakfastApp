@@ -51,6 +51,7 @@ public class SearchableActivity extends ListActivity {
 
     }
 
+
     private void sendFriendRequest() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 

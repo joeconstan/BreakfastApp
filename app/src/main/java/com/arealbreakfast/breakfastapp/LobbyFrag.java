@@ -44,6 +44,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     private DatabaseReference userRef = rootRef.child("users");
     private DatabaseReference messagesRef = rootRef.child("messages");
     final ArrayList<String> conversations = new ArrayList<>();
+    final ArrayList<String> uids = new ArrayList<>();
     private static final String TAG = "lobbyfrag: ";
     Intent intent; //if doesnt work can make just Intent intent; and assign later
 
@@ -79,10 +80,11 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 if (dataSnapshot.exists()) {
                                     User u = dataSnapshot.getValue(User.class);
-                                    conversations.add(u.getName()); //u.getname is null i think -- not working
+                                    conversations.add(u.getName());
+                                    uids.add(u.getUid());
                                     Log.v(TAG, "u.getName(): " + u.getName());
                                     ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
-                                    ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), R.layout.conversationsandfriends_list_item, R.id.conversationsandfriends_list_item, conversations);
+                                    ConversationListAdapter ad = new ConversationListAdapter(getContext(), conversations, uids);
                                     lv.setAdapter(ad);
                                 }
                             }
