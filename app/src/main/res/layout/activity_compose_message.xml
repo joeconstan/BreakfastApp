@@ -57,9 +57,12 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:layout_above="@+id/linearlayoutmsgs"
+        />
 
     <LinearLayout
+        android:id="@+id/linearlayoutmsgs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

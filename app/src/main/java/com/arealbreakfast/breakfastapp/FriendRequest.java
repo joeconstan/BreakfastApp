@@ -40,15 +40,12 @@ public class FriendRequest extends AppCompatActivity {
     //1 - friends
     //2 - rejected
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests);
 
-        /*Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
-        mActionBarToolbar.setTitle("");
-        setSupportActionBar(mActionBarToolbar);
-        mActionBarToolbar.setTitle("Friend Requests");*/
 
 
         ListView listView = (ListView) findViewById(R.id.friendrequestlv);

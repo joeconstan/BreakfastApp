@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!--add images-->
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/conversationpicIV"
+        android:layout_marginLeft="5dp"
+        android:src="@mipmap/ic_launcher"
+        />
+
+
+    <TextView
+        android:layout_toEndOf="@id/conversationpicIV"
+        android:layout_marginLeft="12dp"
+        android:id="@+id/conversations_list_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="4sp"
+        android:gravity="center_vertical"
+        android:textColor="#FFFFFF"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>

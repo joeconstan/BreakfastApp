@@ -42,7 +42,6 @@ public class ComposeRecipient extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_recipient);
-        setContentView(R.layout.activity_compose_recipient);
 
         final Intent intent = new Intent(this, ComposeMessage.class);
         final ArrayList<String> friends = new ArrayList<>();

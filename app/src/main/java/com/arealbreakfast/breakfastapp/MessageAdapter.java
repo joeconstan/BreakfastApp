@@ -43,7 +43,7 @@ public class MessageAdapter extends BaseAdapter implements ListAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        if (view == null) {
+        //if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.messages_list_item, null);
 
@@ -53,7 +53,7 @@ public class MessageAdapter extends BaseAdapter implements ListAdapter{
                 textView.setGravity(Gravity.RIGHT);
             else
                 textView.setGravity(Gravity.LEFT);
-        }
+        //}
         return view;
     }
 }
