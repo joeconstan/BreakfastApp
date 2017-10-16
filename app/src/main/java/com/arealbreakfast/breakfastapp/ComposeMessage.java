@@ -3,7 +3,6 @@ package com.arealbreakfast.breakfastapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -42,7 +41,6 @@ public class ComposeMessage extends BaseToolbarActivity {
         toolbarText.setText(getIntent().getStringExtra("recp"));
 
 
-
         Query q = messagesRef.child(getKey()).orderByKey();
         q.addValueEventListener(new ValueEventListener() {
             @Override
@@ -52,11 +50,15 @@ public class ComposeMessage extends BaseToolbarActivity {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         Message ms = postSnapshot.getValue(Message.class);
+                        if (ms.getMessageRecipient().equals(mAuth.getCurrentUser().getUid())) {
+                            //ms.setRead(1);
+                            //messagesRef.child(getKey()).setValue(ms);
+
+                        }
                         allThemMessages.add(ms.getMessageText() + "\n");
                         if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
                             msgUserKeys.add(1);
-                        }
-                        else
+                        } else
                             msgUserKeys.add(0);
                     }
                     displayMessages();
@@ -87,7 +89,7 @@ public class ComposeMessage extends BaseToolbarActivity {
     }
 
     public void sendMessage(View view) {
-
+//schema changed somehow - should be by convo, not by msg
         final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
         String messageText = msgText.getText().toString();
         String messageUser = mAuth.getCurrentUser().getDisplayName();

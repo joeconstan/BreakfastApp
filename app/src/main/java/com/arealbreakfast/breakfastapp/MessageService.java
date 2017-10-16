@@ -33,7 +33,7 @@ public class MessageService extends Service {
                 if (dataSnapshot.exists()) {
                     //final Message m = dataSnapshot.getValue(Message.class);
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        final Message m = child.getValue(Message.class);
+                       /* final Message m = child.getValue(Message.class);*/
 
                         //making a listener for the individ messages in this found convo
                         String k = dataSnapshot.getKey();
@@ -47,7 +47,7 @@ public class MessageService extends Service {
                                         public void run() {
                                             Intent intent = new Intent("newmessage");
                                             intent.putExtra("messageText", e.getMessageText());
-                                            intent.putExtra("read", 0);
+                                            intent.putExtra("read", e.getRead());
                                             intent.putExtra("recipient", e.getMessageRecipient());
                                             sendBroadcast(intent);
                                             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
@@ -77,7 +77,7 @@ public class MessageService extends Service {
                             }
                         });
 
-                        new Thread(new Runnable() {
+                       /* new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 Intent intent = new Intent("newmessage");
@@ -89,7 +89,7 @@ public class MessageService extends Service {
                                 //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
                             }
-                        }).start();
+                        }).start();*/
                     }
                 }
             }
