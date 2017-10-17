@@ -177,7 +177,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                                     conversations.addAll(hs);
 
                                     isGroup.add(1);
-                                    intent = new Intent(getContext(), ComposeMessage.class); //todo: this is whats breaking it rn--------------------------
+                                    intent = new Intent(rootView.getContext(), ComposeMessage.class); //todo: this is whats breaking it rn--------------------------
                                     intent.putExtra("uid1", groupMessage.getCreator());
                                     for (int i = 0; i < groupMessage.getMessageRecipient().size(); i++) {
                                         uids.add(groupMessage.getMessageRecipient().get(i));
@@ -212,8 +212,8 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                         });
 
 
-                        ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
-                        final ArrayAdapter<String> ad = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, conversations);
+                        ListView lv = (ListView) rootView.findViewById(R.id.convolist_lv);
+                        final ArrayAdapter<String> ad = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_list_item_1, conversations);
                         lv.setAdapter(ad);
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override

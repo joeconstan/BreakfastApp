@@ -99,7 +99,8 @@ public class ComposeMessage extends BaseToolbarActivity {
                                 }
                                 i++;
                             }
-                            allThemMessages.add(ms.getMessageText() + "\n");
+                            allThemMessages.add(ms.getMessageText() + "\n"); //todo: this must not be happening
+                            Log.v(TAG, "made it into listener");
                             if (ms.getCreator().equals(mAuth.getCurrentUser().getUid())) {
                                 msgUserKeys.add(1);
                             } else
@@ -160,6 +161,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             String messageText = msgText.getText().toString();
             String messageUser = mAuth.getCurrentUser().getUid();
             ArrayList<String> messageRecipients = getIntent().getStringArrayListExtra("groupuids");
+            messageRecipients.add(messageUser);
             GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients, getIntent().getStringExtra("recp"));
             groupMsgRef.child(getGroupKey()).push().setValue(msg);
             msgText.setText("");
