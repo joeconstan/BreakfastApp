@@ -151,30 +151,30 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
         });
 
 
-
+        //todo : this entire chunk needs modifying for group msgs
         //checking if group chats exist for this user
-        Query w = groupMsgRef.orderByKey();
-        w.addChildEventListener(new ChildEventListener() {
+        Query g = groupMsgRef.orderByKey();
+        g.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
                     String key = dataSnapshot.getKey();
-                    if (key.contains(mAuth.getCurrentUser().getUid())) {
-                        String otherUid = key.replace(mAuth.getCurrentUser().getUid(), "");
+                    if (key.contains(mAuth.getCurrentUser().getUid())) { //|| recipients includes my uid
+                        //String otherUid = key.replace(mAuth.getCurrentUser().getUid(), "");
                         //Message m = dataSnapshot.getValue(Message.class); //todo : get name by uid & remove messageRecipient from message.class
                         TextView nomsgstv = (TextView) rootView.findViewById(R.id.nomsgsmsgtv);
                         nomsgstv.setText("");
 
 
-                        Query a = userRef.orderByChild("uid").equalTo(otherUid);
-                        a.addChildEventListener(new ChildEventListener() {
+                        Query gr = groupMsgRef.child("key").orderByKey();
+                        gr.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 if (dataSnapshot.exists()) {
-                                    User u = dataSnapshot.getValue(User.class);
-                                    conversations.add(u.getName());
-                                    uids.add(u.getUid());
-                                    Log.v(TAG, "u.getName(): " + u.getName());
+                                    GroupMessage groupMessage = dataSnapshot.getValue(GroupMessage.class);
+
+                                    conversations.add(groupMessage.getGroupName());
+                                    //todo: add all recipient uids to this--uids.add(u.getUid());
                                     ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
                                     ConversationListAdapter ad = new ConversationListAdapter(getContext(), conversations, uids);
                                     lv.setAdapter(ad);
@@ -209,7 +209,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                //todo: modify this chunk for group msgs
+
                                 intent = new Intent(view.getContext(), ComposeMessage.class);
                                 intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
                                 intent.putExtra("recp", ad.getItem(position));
@@ -240,21 +240,6 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabl);

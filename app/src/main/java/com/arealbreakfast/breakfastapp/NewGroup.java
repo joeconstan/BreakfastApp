@@ -51,19 +51,20 @@ public class NewGroup extends AppCompatActivity {
                 List<String> items = Arrays.asList(str.split("\\s*,\\s*"));
                 for (String x : items) {
                     groupNames.add(x); //todo: add the group members by name and get the uids
+                    Log.v(TAG, "groupmember 1: " + x);
                 }
 
                 putUidsbyNames(groupNames, intent);
                 intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
                 intent.putExtra("isgroup", 1);
-                startActivity(intent);
             }
         });
     }
 
-    public void putUidsbyNames(ArrayList<String> names, final Intent intent) {
+    public void putUidsbyNames(final ArrayList<String> names, final Intent intent) {
         for (int i = 0; i < names.size(); i++) {
             Query q = userRef.orderByChild("name").equalTo(names.get(i));
+            final int finalI = i;
             q.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -73,6 +74,9 @@ public class NewGroup extends AppCompatActivity {
                         Log.v(TAG, "in listener for groupuids");
                         intent.putExtra("groupuids", groupUids);
                         intent.putExtra("membercount", groupUids.size());
+                        if (finalI ==(names.size()-1)){
+                            startActivity(intent);
+                        }
                     }
                 }
 
@@ -97,6 +101,7 @@ public class NewGroup extends AppCompatActivity {
                 }
             });
         }
+        //startActivity(intent);
 
     }
 }

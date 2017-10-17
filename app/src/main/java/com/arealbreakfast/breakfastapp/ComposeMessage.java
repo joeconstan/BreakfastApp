@@ -161,7 +161,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             String messageText = msgText.getText().toString();
             String messageUser = mAuth.getCurrentUser().getDisplayName();
             ArrayList<String> messageRecipients = getIntent().getStringArrayListExtra("groupuids");
-            GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients);
+            GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients, getIntent().getStringExtra("recp"));
             groupMsgRef.child(getGroupKey()).push().setValue(msg);
             msgText.setText("");
         }

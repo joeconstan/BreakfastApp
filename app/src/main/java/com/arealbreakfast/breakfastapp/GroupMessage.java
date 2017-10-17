@@ -12,15 +12,18 @@ public class GroupMessage {
     public Long messageTime;
     public ArrayList<String> messageRecipient;
     public ArrayList<Integer> read;
+    public String groupName;
 
 
-    public GroupMessage(String messageText, String messageUser, ArrayList<String> messageRecipient) {
+    public GroupMessage(String messageText, String messageUser, ArrayList<String> messageRecipient, String groupName) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.messageRecipient = messageRecipient;
         this.messageTime = new Date().getTime();
-        for (int i = 0; i < read.size(); i++) {
-            this.read.set(i, 0);
+        this.read = new ArrayList<>();
+        this.groupName = groupName;
+        for (int i = 0; i < messageRecipient.size(); i++) {
+            this.read.add(0);
         }
     }
 
@@ -48,5 +51,7 @@ public class GroupMessage {
         this.read = read;
     }
 
-
+    public String getGroupName() {
+        return groupName;
+    }
 }
