@@ -1,25 +1,17 @@
 package com.arealbreakfast.breakfastapp;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.ToolbarWidgetWrapper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,12 +22,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LobbyFrag extends android.support.v4.app.Fragment {
 
@@ -156,7 +147,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
 
         //todo : this entire chunk needs modifying for group msgs
         //checking if group chats exist for this user
-        Query g = groupMsgRef.orderByKey();
+        final Query g = groupMsgRef.orderByKey();
         g.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -169,15 +160,24 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                         nomsgstv.setText("");
 
                         //display conversations
-                        Query gr = groupMsgRef.child(key).orderByKey();
+                        Query gr = groupMsgRef.child(key).orderByKey(); //only add these to conversations AL
+                        //Query gr = groupMsgRef.orderByKey();
                         gr.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 if (dataSnapshot.exists()) {
                                     GroupMessage groupMessage = dataSnapshot.getValue(GroupMessage.class);
                                     conversations.add(groupMessage.getGroupName());
+                                    //todo: there is probably a better soln to avoid duplicates. does this hurt the order? should order by time anyway, not sure if it does that anyway
+
+                                    //to remove duplicates. todo: not efficient. should not add them in the first place
+                                    Set<String> hs = new HashSet<>();
+                                    hs.addAll(conversations);
+                                    conversations.clear();
+                                    conversations.addAll(hs);
+
                                     isGroup.add(1);
-                                    intent = new Intent(getContext(), ComposeMessage.class);
+                                    intent = new Intent(getContext(), ComposeMessage.class); //todo: this is whats breaking it rn--------------------------
                                     intent.putExtra("uid1", groupMessage.getCreator());
                                     for (int i = 0; i < groupMessage.getMessageRecipient().size(); i++) {
                                         uids.add(groupMessage.getMessageRecipient().get(i));
