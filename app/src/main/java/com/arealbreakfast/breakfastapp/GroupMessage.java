@@ -8,16 +8,16 @@ public class GroupMessage {
     //0-unread
     //1-read
     public String messageText;
-    public String messageUser;
+    public String creator;
     public Long messageTime;
     public ArrayList<String> messageRecipient;
     public ArrayList<Integer> read;
     public String groupName;
 
 
-    public GroupMessage(String messageText, String messageUser, ArrayList<String> messageRecipient, String groupName) {
+    public GroupMessage(String messageText, String creator, ArrayList<String> messageRecipient, String groupName) {
         this.messageText = messageText;
-        this.messageUser = messageUser;
+        this.creator = creator;
         this.messageRecipient = messageRecipient;
         this.messageTime = new Date().getTime();
         this.read = new ArrayList<>();
@@ -39,8 +39,8 @@ public class GroupMessage {
         return messageText;
     }
 
-    public String getMessageUser() {
-        return messageUser;
+    public String getCreator() {
+        return creator;
     }
 
     public ArrayList<Integer> getRead() {

@@ -23,7 +23,9 @@ import java.util.List;
 
 
 public class NewGroup extends AppCompatActivity {
-
+//todo: instead of entering names, could choose from friends list. also, override on backpressed to go to lobby always from composemessage
+//todo: change messagerecipients for groups depending on who sent each msg
+//todo: only show the group once in the list view - each new msg makes it appear another time
     private static final String TAG = "okay doke";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<String> groupNames = new ArrayList<>();
@@ -50,7 +52,7 @@ public class NewGroup extends AppCompatActivity {
 
                 List<String> items = Arrays.asList(str.split("\\s*,\\s*"));
                 for (String x : items) {
-                    groupNames.add(x); //todo: add the group members by name and get the uids
+                    groupNames.add(x);
                     Log.v(TAG, "groupmember 1: " + x);
                 }
 

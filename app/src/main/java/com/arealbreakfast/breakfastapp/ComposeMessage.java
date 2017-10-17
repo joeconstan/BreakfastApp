@@ -95,12 +95,12 @@ public class ComposeMessage extends BaseToolbarActivity {
                                     read.set(i, 1);
                                     ms.setRead(read);
                                     String k = postSnapshot.getKey();
-                                    groupMsgRef.child(getKey()).child(k).setValue(ms);
+                                    groupMsgRef.child(getGroupKey()).child(k).setValue(ms);
                                 }
                                 i++;
                             }
                             allThemMessages.add(ms.getMessageText() + "\n");
-                            if (ms.getMessageUser().equals(mAuth.getCurrentUser().getDisplayName())) {
+                            if (ms.getCreator().equals(mAuth.getCurrentUser().getUid())) {
                                 msgUserKeys.add(1);
                             } else
                                 msgUserKeys.add(0);
@@ -119,13 +119,12 @@ public class ComposeMessage extends BaseToolbarActivity {
 
     }
 
-    //create key by taking the entire creator uid plus the first 5 (6?) digits of each uid
+    //create key by taking the entire creator uid plus the first 5 digits of each other uid
     private String getGroupKey() {
         Intent intent = getIntent();
         String uid1 = intent.getStringExtra("uid1");
-        ArrayList<String> uids = intent.getStringArrayListExtra("groupuids");
+        ArrayList<String> uids = intent.getStringArrayListExtra("groupuids"); //todo: add uid1 to this? and just sort all alphabetically w/o regard to creator
         String key = uid1;
-
         for (int i=0;i<uids.size();i++) {
             String x = uids.get(i);
             key += x.substring(0, 5);
@@ -159,7 +158,7 @@ public class ComposeMessage extends BaseToolbarActivity {
         } else {   //todo: modify this chunk && display messages in lobby or wherever from group msgs
             final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
             String messageText = msgText.getText().toString();
-            String messageUser = mAuth.getCurrentUser().getDisplayName();
+            String messageUser = mAuth.getCurrentUser().getUid();
             ArrayList<String> messageRecipients = getIntent().getStringArrayListExtra("groupuids");
             GroupMessage msg = new GroupMessage(messageText, messageUser, messageRecipients, getIntent().getStringExtra("recp"));
             groupMsgRef.child(getGroupKey()).push().setValue(msg);

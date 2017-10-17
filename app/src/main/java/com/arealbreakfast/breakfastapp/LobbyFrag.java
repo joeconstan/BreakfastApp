@@ -46,7 +46,9 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
     private DatabaseReference groupMsgRef = rootRef.child("groupmessages");
     final ArrayList<String> conversations = new ArrayList<>();
     final ArrayList<String> uids = new ArrayList<>();
+    final ArrayList<String> groupuids = new ArrayList<>();
     private static final String TAG = "lobbyfrag: ";
+    final ArrayList<Integer> isGroup = new ArrayList<>(); //0-no, 1-yes
     Intent intent; //if doesnt work can make just Intent intent; and assign later
 
     @Override
@@ -82,6 +84,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                                 if (dataSnapshot.exists()) {
                                     User u = dataSnapshot.getValue(User.class);
                                     conversations.add(u.getName());
+                                    isGroup.add(0);
                                     uids.add(u.getUid());
                                     Log.v(TAG, "u.getName(): " + u.getName());
                                     ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
@@ -159,21 +162,27 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
                     String key = dataSnapshot.getKey();
-                    if (key.contains(mAuth.getCurrentUser().getUid())) { //|| recipients includes my uid
-                        //String otherUid = key.replace(mAuth.getCurrentUser().getUid(), "");
-                        //Message m = dataSnapshot.getValue(Message.class); //todo : get name by uid & remove messageRecipient from message.class
+                    if ((key.contains(mAuth.getCurrentUser().getUid())) || (key.contains(mAuth.getCurrentUser().getUid().substring(0, 5)))) { //if user is part of chat
+
+                        //remove no messages text
                         TextView nomsgstv = (TextView) rootView.findViewById(R.id.nomsgsmsgtv);
                         nomsgstv.setText("");
 
-
-                        Query gr = groupMsgRef.child("key").orderByKey();
+                        //display conversations
+                        Query gr = groupMsgRef.child(key).orderByKey();
                         gr.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 if (dataSnapshot.exists()) {
                                     GroupMessage groupMessage = dataSnapshot.getValue(GroupMessage.class);
-
                                     conversations.add(groupMessage.getGroupName());
+                                    isGroup.add(1);
+                                    intent = new Intent(getContext(), ComposeMessage.class);
+                                    intent.putExtra("uid1", groupMessage.getCreator());
+                                    for (int i = 0; i < groupMessage.getMessageRecipient().size(); i++) {
+                                        uids.add(groupMessage.getMessageRecipient().get(i));
+                                        groupuids.add(groupMessage.getMessageRecipient().get(i));
+                                    }
                                     //todo: add all recipient uids to this--uids.add(u.getUid());
                                     ListView lv = (ListView) getActivity().findViewById(R.id.convolist_lv);
                                     ConversationListAdapter ad = new ConversationListAdapter(getContext(), conversations, uids);
@@ -209,11 +218,17 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                intent = new Intent(view.getContext(), ComposeMessage.class);
-                                intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
                                 intent.putExtra("recp", ad.getItem(position));
-                                putUidByName(ad.getItem(position));
+                                //putUidByName(ad.getItem(position));
+                                if (isGroup.get(position) == 1) {
+                                    intent.putExtra("isgroup", 1);
+                                    intent.putExtra("groupuids", groupuids);
+                                    startActivity(intent);
+                                } else {
+                                    intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
+                                    intent.putExtra("isgroup", 0);
+                                    putUidByName(ad.getItem(position));
+                                }
                             }
                         });
                     }
@@ -288,5 +303,6 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
             }
         });
     }
+
 
 }
