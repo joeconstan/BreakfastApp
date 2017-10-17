@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +24,12 @@ import java.util.List;
 
 public class NewGroup extends AppCompatActivity {
 
+    private static final String TAG = "okay doke";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private ArrayList<String> groupuids = new ArrayList<>();
+    private ArrayList<String> groupNames = new ArrayList<>();
+    private ArrayList<String> groupUids = new ArrayList<>();
+    private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference userRef = rootRef.child("users");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,15 +50,53 @@ public class NewGroup extends AppCompatActivity {
 
                 List<String> items = Arrays.asList(str.split("\\s*,\\s*"));
                 for (String x : items) {
-                    groupuids.add(x); //todo: add the group members by name and get the uids
+                    groupNames.add(x); //todo: add the group members by name and get the uids
                 }
 
-                intent.putExtra("groupuids", groupuids);//todo: add to groupuids
-                intent.putExtra("membercount", groupuids.size());
+                putUidsbyNames(groupNames, intent);
                 intent.putExtra("uid1", mAuth.getCurrentUser().getUid());
                 intent.putExtra("isgroup", 1);
                 startActivity(intent);
             }
         });
+    }
+
+    public void putUidsbyNames(ArrayList<String> names, final Intent intent) {
+        for (int i = 0; i < names.size(); i++) {
+            Query q = userRef.orderByChild("name").equalTo(names.get(i));
+            q.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    if (dataSnapshot.exists()) {
+                        User user = dataSnapshot.getValue(User.class);
+                        groupUids.add(user.getUid());
+                        Log.v(TAG, "in listener for groupuids");
+                        intent.putExtra("groupuids", groupUids);
+                        intent.putExtra("membercount", groupUids.size());
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 }

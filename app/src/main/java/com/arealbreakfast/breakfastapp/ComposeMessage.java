@@ -78,7 +78,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             });
 
 
-        } else { //it is a group message
+        } else { //it's a group message
             Query q = groupMsgRef.child(getGroupKey()).orderByKey();
             q.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -126,7 +126,8 @@ public class ComposeMessage extends BaseToolbarActivity {
         ArrayList<String> uids = intent.getStringArrayListExtra("groupuids");
         String key = uid1;
 
-        for (String x : uids) {
+        for (int i=0;i<uids.size();i++) {
+            String x = uids.get(i);
             key += x.substring(0, 5);
         }
 
