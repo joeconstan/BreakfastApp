@@ -54,6 +54,7 @@ public class NewGroup extends AppCompatActivity {
                 List<String> items = Arrays.asList(str.split("\\s*,\\s*"));
                 for (String x : items) {
                     groupNames.add(x);
+                    groupNames.add(mAuth.getCurrentUser().getDisplayName());
                     Log.v(TAG, "groupmember 1: " + x);
                 }
 

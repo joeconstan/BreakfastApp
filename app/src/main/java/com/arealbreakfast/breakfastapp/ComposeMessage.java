@@ -123,9 +123,9 @@ public class ComposeMessage extends BaseToolbarActivity {
     //create key by taking the entire creator uid plus the first 5 digits of each other uid
     private String getGroupKey() {
         Intent intent = getIntent();
-        String uid1 = intent.getStringExtra("uid1");
+        //String uid1 = intent.getStringExtra("uid1");
         ArrayList<String> uids = intent.getStringArrayListExtra("groupuids"); //todo: add uid1 to this? and just sort all alphabetically w/o regard to creator
-        String key = uid1;
+        String key = "";
         for (int i=0;i<uids.size();i++) {
             String x = uids.get(i);
             key += x.substring(0, 5);
@@ -156,7 +156,7 @@ public class ComposeMessage extends BaseToolbarActivity {
             Message msg = new Message(messageText, messageUser, messageRecipient);
             messagesRef.child(getKey()).push().setValue(msg);
             msgText.setText("");
-        } else {   //todo: modify this chunk && display messages in lobby or wherever from group msgs
+        } else {   //isgroupmessage
             final EditText msgText = (EditText) findViewById(R.id.newmsg_et);
             String messageText = msgText.getText().toString();
             String messageUser = mAuth.getCurrentUser().getUid();

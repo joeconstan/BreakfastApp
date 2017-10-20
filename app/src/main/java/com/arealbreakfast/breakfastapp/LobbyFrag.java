@@ -177,7 +177,7 @@ public class LobbyFrag extends android.support.v4.app.Fragment {
                                     conversations.addAll(hs);
 
                                     isGroup.add(1);
-                                    intent = new Intent(rootView.getContext(), ComposeMessage.class); //todo: this is whats breaking it rn--------------------------
+                                    intent = new Intent(rootView.getContext(), ComposeMessage.class);
                                     intent.putExtra("uid1", groupMessage.getCreator());
                                     for (int i = 0; i < groupMessage.getMessageRecipient().size(); i++) {
                                         uids.add(groupMessage.getMessageRecipient().get(i));
