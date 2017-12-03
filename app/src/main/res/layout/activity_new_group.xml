@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundrevised">
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newgroupnameet"
+        android:hint="Group Name"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#FFFFFF"
+        android:layout_marginTop="150dp"
+        />
+
+    <EditText
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/newgroupnameet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="enter group members"
+        android:textColorHint="#FFFFFF"
+        android:id="@+id/newgroupmemberset"
+        />
+
+    <Button
+        android:layout_marginTop="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newgroupcreatebutton"
+        android:text="create"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/newgroupmemberset"
+        />
+
+
+
+</RelativeLayout>
